@@ -1,0 +1,54 @@
+# Create .ssh directory for jenkins
+- name: Create .ssh directory
+  file: 
+    path: "{{ agent_jenkins_path }}/.ssh"
+    state: directory
+    mode: 0700
+    owner: Jenkins
+    group: staff
+
+# Copy and dycrypt ssh files
+- name: Copy and dycrypt SSH files
+  shell: |
+    cp {{ ansible_root_path }}/files/ssh/authorized_keys {{ agent_jenkins_path }}/.ssh/
+    /usr/local/bin/ansible-vault decrypt {{ agent_jenkins_path }}/.ssh/authorized_keys --vault-password-file /tmp/password.txt
+    chmod 644 {{ agent_jenkins_path }}/.ssh/authorized_keys
+    chown Jenkins:staff {{ agent_jenkins_path }}/.ssh/authorized_keys
+
+    cp {{ ansible_root_path }}/files/ssh/config {{ agent_jenkins_path }}/.ssh/
+    chmod 644 {{ agent_jenkins_path }}/.ssh/config
+    chown Jenkins:staff {{ agent_jenkins_path }}/.ssh/config
+
+    cp {{ ansible_root_path }}/files/ssh/known_hosts {{ agent_jenkins_path }}/.ssh/
+    /usr/local/bin/ansible-vault decrypt {{ agent_jenkins_path }}/.ssh/known_hosts --vault-password-file /tmp/password.txt
+    chmod 644 {{ agent_jenkins_path }}/.ssh/known_hosts
+    chown Jenkins:staff  {{ agent_jenkins_path }}/.ssh/known_hosts
+
+    cp {{ ansible_root_path }}/files/ssh/id_rsa.pub {{ agent_jenkins_path }}/.ssh/
+    /usr/local/bin/ansible-vault decrypt {{ agent_jenkins_path }}/.ssh/id_rsa.pub --vault-password-file /tmp/password.txt
+    chmod 644 {{ agent_jenkins_path }}/.ssh/id_rsa.pub
+    chown Jenkins:staff  {{ agent_jenkins_path }}/.ssh/id_rsa.pub
+
+    cp {{ ansible_root_path }}/files/ssh/id_rsa {{ agent_jenkins_path }}/.ssh/
+    /usr/local/bin/ansible-vault decrypt {{ agent_jenkins_path }}/.ssh/id_rsa --vault-password-file /tmp/password.txt
+    chmod 600 {{ agent_jenkins_path }}/.ssh/id_rsa
+    chown Jenkins:staff  {{ agent_jenkins_path }}/.ssh/id_rsa
+
+    cp {{ ansible_root_path }}/files/ssh/id_rsa_github_devops.pub {{ agent_jenkins_path }}/.ssh/
+    /usr/local/bin/ansible-vault decrypt {{ agent_jenkins_path }}/.ssh/id_rsa_github_devops.pub --vault-password-file /tmp/password.txt
+    chmod 644 {{ agent_jenkins_path }}/.ssh/id_rsa_github_devops.pub
+    chown Jenkins:staff  {{ agent_jenkins_path }}/.ssh/id_rsa_github_devops.pub
+
+    cp {{ ansible_root_path }}/files/ssh/id_rsa_github_devops {{ agent_jenkins_path }}/.ssh/
+    /usr/local/bin/ansible-vault decrypt {{ agent_jenkins_path }}/.ssh/id_rsa_github_devops --vault-password-file /tmp/password.txt
+    chmod 600 {{ agent_jenkins_path }}/.ssh/id_rsa_github_devops
+    chown Jenkins:staff  {{ agent_jenkins_path }}/.ssh/id_rsa_github_devops
+
+- name: check ssh dir
+  shell: |
+    pwd
+    ls -la
+  args:
+    chdir: "{{ agent_jenkins_path }}/.ssh"
+  register: sshdir
+- debug: var=sshdir

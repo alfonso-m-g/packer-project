@@ -1,0 +1,33 @@
+# Install Homebrew
+- name: Download homebrew
+  shell: NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+- name: install brew cask tap
+  shell: |
+    bash -lc "brew tap homebrew/cask-versions"
+  register: casktap
+- debug: var=casktap
+
+- name: install sonar-scanner
+  shell: |
+    bash -lc "brew install sonar-scanner"
+  register: sonarscanner
+- debug: var=sonarscanner
+
+- name: install git
+  shell: |
+    bash -lc "brew install git"
+  register: git
+- debug: var=git
+
+- name: install node
+  shell: |
+    bash -lc "brew install node"
+  register: node
+- debug: var=node
+
+- name: install podenv
+  shell: |
+    bash -lc "brew install kylef/formulae/podenv"
+  register: podenv
+- debug: var=podenv

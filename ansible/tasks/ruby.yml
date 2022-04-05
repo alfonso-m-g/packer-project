@@ -1,0 +1,25 @@
+# Install RVM
+- name: download rvm
+  shell: curl -sSL https://get.rvm.io | bash -s stable
+
+- name: rvm install ruby 2.6.8
+  shell: |
+    bash -lc "rvm install 2.6.8"
+
+- name: rvm install ruby 3.0.0
+  shell: |
+    bash -lc "rvm install 3.0.0"
+
+- name: default to ruby 2.6.8
+  shell: |
+    bash -lc "rvm alias create default ruby-2.6.8"
+
+- name: set ruby
+  shell: |
+    bash -lc "rvm use ruby-2.6.8"
+
+- name: rvm list
+  shell: |
+    bash -lc "rvm list"
+  register: rvmlist
+- debug: var=rvmlist

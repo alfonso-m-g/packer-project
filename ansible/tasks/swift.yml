@@ -1,0 +1,50 @@
+- name: Clone swift-format git repository
+  git:
+    repo: 'https://github.com/apple/swift-format.git'
+    dest: "{{ agent_jenkins_path }}/swift-format"
+    version: swift-5.5-branch
+    
+- name: Install swift-format
+  shell: |
+    swift build -c release
+  args:
+    chdir: "{{ agent_jenkins_path }}/swift-format"
+  register: swift
+
+- debug:
+    var: swift
+
+- name: copy swift-format
+  copy:
+    src: "{{ agent_jenkins_path }}/swift-format/.build/release/swift-format"
+    dest: /usr/local/bin
+    mode: 755
+    group: admin
+
+- name: Delete swift-format build dir
+  file:
+    path: "{{ agent_jenkins_path }}/swift-format"
+    state: absent
+
+- name: swift-format test
+  shell: bash -cl "swift-format --version"
+  register: swift
+
+- debug:
+    var: swift
+
+- name: Install swift-lint with homebrew
+  homebrew:
+    name: swiftlint
+    state: present
+  register: swift
+
+- debug:
+    var: swift
+
+- name: verify swift is on /usr/local/bin
+  shell: ls /usr/local/bin/swift*
+  register: swift
+
+- debug: 
+    var: swift

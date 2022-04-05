@@ -1,0 +1,29 @@
+Host *
+    ServerAliveInterval 150
+    IPQoS lowdelay throughput
+Host *
+    ConnectTimeout 360
+    IPQoS lowdelay throughput
+
+host *
+  PubkeyAcceptedKeyTypes +ssh-dss
+
+Host gitlab.disney.com
+    HostName gitlab.disney.com
+    User git
+    IdentityFile ~/.ssh/id_rsa
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+
+Host github.disney.com
+    HostName github.disney.com
+    User git
+    IdentityFile ~/.ssh/id_rsa_github_devops
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+
+Host code.espn.com
+    StrictHostKeyChecking no
+    HostName code.espn.com
+    User git
+    IdentityFile ~/.ssh/code_espn_com

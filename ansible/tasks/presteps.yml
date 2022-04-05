@@ -1,0 +1,88 @@
+# Pre steps
+- name: check ansible dir
+  shell: |
+    pwd
+    ls -la
+  args:
+    chdir: /Users/admin/ansible
+  register: checkdir
+- debug: var=checkdir
+
+- name: check ansible dir files
+  shell: |
+    pwd
+    ls -la
+  args:
+    chdir: /Users/admin/ansible/files
+  register: checkdirfiles
+- debug: var=checkdirfiles
+
+- name: check ansible dir keys
+  shell: |
+    pwd
+    ls -la
+  args:
+    chdir: /Users/admin/ansible/keys
+  register: checkdirkeys
+- debug: var=checkdirkeys
+
+# Create the Jenkins user
+- name: Create Jenkins user
+  user:
+    name: Jenkins
+    shell: /bin/bash
+    password: "{{ user_password }}"
+    group: staff
+    groups: staff,admin
+
+# Create workspace directory
+- name: Create workspace directory
+  file: path={{ agent_workspace_path }} state=directory
+
+  # Create Shared directory
+- name: Create Shared directory
+  file: 
+    path: /Users/Shared 
+    state: directory
+
+- name: check ansible dir
+  shell: |
+    pwd
+    ls -la
+  args:
+    chdir: "{{ agent_workspace_path }}"
+  register: aworkspace
+- debug: var=aworkspace
+
+- name: check Shared dir
+  shell: |
+    pwd
+    ls -la
+  args:
+    chdir: /Users/Shared
+  register: shared
+- debug: var=shared
+
+- name: Create cert directory
+  file: 
+    path: "{{ agent_jenkins_path }}/certs"
+    state: directory
+
+- name: Copy and decrypt certs
+  shell: |    
+    cp {{ agent_workspace_path }}/keys/* {{ agent_jenkins_path }}/certs
+    /usr/local/bin/ansible-vault decrypt --vault-password-file /tmp/password.txt {{ agent_jenkins_path }}/certs/Disney_Distribution_2022.p12
+    /usr/local/bin/ansible-vault decrypt --vault-password-file /tmp/password.txt {{ agent_jenkins_path }}/certs/ESPN_Enterprises.p12
+    /usr/local/bin/ansible-vault decrypt --vault-password-file /tmp/password.txt {{ agent_jenkins_path }}/certs/ABCDigital_2022.p12
+    chown -R Jenkins:staff {{ agent_jenkins_path }}/certs
+
+- name: check jenkins cert dir
+  shell: |
+    pwd
+    ls -laR
+  args:
+    chdir: "{{ agent_jenkins_path }}/certs"
+  register: cert_dir
+
+- debug:
+    var: cert_dir

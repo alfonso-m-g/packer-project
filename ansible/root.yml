@@ -1,0 +1,11 @@
+- hosts: root
+  vars_files:
+    - vars/vars.yml
+    - vars/passwords.yml
+  become: yes
+  tasks:
+    - include_tasks: tasks/presteps.yml
+    - include_tasks: tasks/sudo.yml
+    - include_tasks: tasks/profile.yml
+    - include_tasks: tasks/ssh.yml
+    - include_tasks: tasks/hosts.yml

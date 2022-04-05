@@ -1,0 +1,65 @@
+- name: Install xcode-install
+  shell: |
+    bash -lc "gem install xcode-install"
+
+# List available Xcodes
+- name: xcversion list
+  shell: |
+    bash -lc "xcversion list"
+  environment:
+    FASTLANE_USER: 'DTCI.dl.technology.dtci.ci.cd@disney.com'
+    FASTLANE_SESSION: '{{ fastlane_session }}'
+    FASTLANE_PASSWORD: '{{ fastlane_password }}'
+  register: xcversionlist
+- debug: var=xcversionlist
+
+# Create Xcode cache directory
+- name: Create Xcode cache directory
+  file: 
+    path: /Users/Jenkins/Library/Caches/XcodeInstall/
+    state: directory
+
+# Install Xcode 13.1
+- name: xcversion install 13.1
+  shell: |
+    bash -lc "xcversion install 13.1 --no-switch"
+  environment:
+    FASTLANE_USER: 'DTCI.dl.technology.dtci.ci.cd@disney.com'
+    FASTLANE_SESSION: '{{ fastlane_session }}'
+    FASTLANE_PASSWORD: '{{ fastlane_password }}'
+  args:
+    chdir: /Users/Jenkins/Library/Caches/XcodeInstall/
+  register: xcodeinstall131
+- debug: var=xcodeinstall131
+
+# Move Xcode 13.1 to the right directory
+- name: xcode copy
+  shell: |
+    mkdir /Applications/Xcodes
+    mkdir /Applications/Xcodes/13.1
+    mv /Applications/Xcode-13.1.app /Applications/Xcodes/13.1/Xcode.app
+
+# Install Xcode 13.2.1
+- name: xcversion install 13.2.1
+  shell: |
+    bash -lc "xcversion install 13.2.1 --no-switch"
+  environment:
+    FASTLANE_USER: 'DTCI.dl.technology.dtci.ci.cd@disney.com'
+    FASTLANE_SESSION: '{{ fastlane_session }}'
+    FASTLANE_PASSWORD: '{{ fastlane_password }}'
+  args:
+    chdir: /Users/Jenkins/Library/Caches/XcodeInstall/
+  register: xcodeinstall1321
+- debug: var=xcodeinstall1321
+
+# Move Xcode 13.2.1 to the right directory
+- name: xcode copy
+  shell: |
+    mkdir /Applications/Xcodes
+    mkdir /Applications/Xcodes/13.2.1
+    mv /Applications/Xcode-13.2.1.app /Applications/Xcodes/13.2.1/Xcode.app
+
+# Make Xcode 13.1 the default
+- name: xcode select 13.1
+  shell: |
+    sudo xcode-select --switch /Applications/Xcodes/13.1/Xcode.app

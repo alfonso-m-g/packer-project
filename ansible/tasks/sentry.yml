@@ -1,0 +1,9 @@
+- name: Install sentry
+  shell: curl -sL https://sentry.io/get-cli/ | bash
+
+- name: Check sentry installation
+  shell: ls /usr/local/bin/sentry-cli
+  register: sentrycheck
+
+- debug:
+    var: sentrycheck

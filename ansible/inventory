@@ -1,0 +1,6 @@
+[all]
+127.0.0.1 ansible_connection=local
+[root]
+127.0.0.1 ansible_connection=local
+[Jenkins]
+127.0.0.1 ansible_connection=local

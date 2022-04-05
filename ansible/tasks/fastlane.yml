@@ -1,0 +1,15 @@
+- name: install fastlane
+  shell: |
+    bash -lc "gem install fastlane -v 2.205.0"
+    
+- name: fastlane print
+  shell: bash -lc "fastlane env"
+  register: fastlaneprint
+- debug: var=fastlaneprint
+
+- name: fastlanespaceauth
+  shell: |
+    bash -lc "yes | fastlane spaceauth -u DTCI.dl.technology.dtci.ci.cd@disney.com"
+  environment:
+    FASTLANE_SESSION: '{{ fastlane_session }}'
+    FASTLANE_PASSWORD: '{{ fastlane_password }}'

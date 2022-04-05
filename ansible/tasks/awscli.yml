@@ -1,0 +1,11 @@
+- name: Install awscli
+  homebrew:
+    name: awscli
+    state: latest
+
+- name: test awscli installation
+  shell: bash -lc 'aws --version'
+  register: aws_version
+
+- debug:
+    var: aws_version.stdout

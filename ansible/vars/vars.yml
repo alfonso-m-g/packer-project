@@ -1,0 +1,8 @@
+agent_root_path: "/Users/admin"
+agent_jenkins_path: "/Users/Jenkins"
+agent_workspace_path: "/opt/ansible"
+ansible_root_path: "/Users/admin/ansible"
+team_ids:
+  - EWU3Q535J9
+  - WZ62FEL3UG
+  - N4QLZ9K83F

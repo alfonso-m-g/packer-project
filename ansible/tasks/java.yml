@@ -1,0 +1,28 @@
+- name: Install Java 11
+  shell: |
+    bash -lc "brew install java11"
+  register: java11
+- debug: var=java11
+
+- name: Symlink Java 11
+  shell: |
+    sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+
+- name: Install Java 8
+  shell: |
+    bash -lc "brew install --cask adoptopenjdk8"
+  register: java8
+- debug: var=java8
+
+- name: java print
+  shell: |
+    which java
+    java -version
+  register: javaprint
+- debug: var=javaprint
+
+- name: Install Maven
+  shell: |
+    bash -lc "brew install maven"
+  register: maven
+- debug: var=maven

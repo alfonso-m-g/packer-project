@@ -1,0 +1,21 @@
+- name: Change owner of the keychain
+  shell: |
+    bash -lc "sudo chown Jenkins "/Library/Keychains/System.keychain""
+
+- name: Make default keychain
+  shell: |
+    bash -lc "security default-keychain -s "/Library/Keychains/System.keychain""
+
+- name: List the default keychain
+  shell: |
+    security default-keychain
+  register: default_keychain
+
+- debug:
+    var: default_keychain
+
+- name: Download provisioning profiles with fastlane
+  shell: |
+    sudo bash -lc "export FASTLANE_PASSWORD={{ fastlane_password }} && export FASTLANE_TEAM_ID={{ item }} && fastlane sigh download_all -u DTCI.dl.technology.dtci.ci.cd@disney.com -o "~/Library/MobileDevice/Provisioning Profiles""
+  with_items:
+    - '{{ team_ids }}'

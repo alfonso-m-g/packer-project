@@ -1,0 +1,47 @@
+- name: install certs
+  shell: |
+    echo "[INFO] list all keychains before creation"
+    security list-keychains
+
+    echo "[INFO] Creating keychains"
+    
+    security create-keychain -p {{ login }} login.keychain
+    security unlock-keychain -p {{ login }} login.keychain
+
+    echo "[INFO] list all keychains"
+    security list-keychains
+
+    echo "[INFO] Setting no auto-lock for keychains"
+    security set-keychain-settings login.keychain
+    
+    echo "[INFO] Importing distribution certs."
+    security import {{ agent_jenkins_path }}/certs/Disney_Distribution_2022.p12 -k login.keychain -T /usr/bin/codesign -T /usr/bin/xcodebuild -P {{ espn_cert_key }}
+    security import {{ agent_jenkins_path }}/certs/ESPN_Enterprises.p12 -k login.keychain -T /usr/bin/codesign -T /usr/bin/xcodebuild -P {{ espn_enterprise_cert_key }}
+    security import {{ agent_jenkins_path }}/certs/ABCDigital_2022.p12 -k login.keychain -T /usr/bin/codesign -T /usr/bin/xcodebuild -P {{ abc_cert_key }}
+
+    security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k {{ login }} login.keychain-db
+    security unlock-keychain -p {{ login }} login.keychain
+
+- name: Apply root cert to system
+  shell: |
+    echo "[INFO] listing all keychains"
+    security list-keychains
+    echo "[INFO] checking keychain status - login.keychain"
+    if ! $(security show-keychain-info login.keychain 2> /dev/null); then echo "keychain is locked"; else echo "keychain is UnLocked" ; fi
+    echo "[INFO] unlock login.keychain"
+    security unlock-keychain -p {{ login }} login.keychain
+    echo "[INFO] import cert AppleWWDRCAG3.cer in login.keychain"
+    security import {{ agent_jenkins_path }}/certs/AppleWWDRCAG3.cer -k login.keychain
+
+- name: Delete cert dir
+  file: 
+    path: "{{ agent_jenkins_path }}/certs"
+    state: absent
+
+- name: show all certs
+  shell: |
+    security find-identity -p codesigning -v
+  register: certs
+- debug: 
+    var: certs
+

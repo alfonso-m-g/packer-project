@@ -1,0 +1,8 @@
+- name: Install git-lfs with homebrew
+  community.general.homebrew:
+    name: git-lfs
+    state: present
+  register: git_lfs
+
+- debug:
+    var: git_lfs

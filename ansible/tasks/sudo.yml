@@ -1,0 +1,9 @@
+# Add the Jenkins user to the sudoers file
+- name: Add Jenkins to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
+    insertafter: '%admin  ALL=(ALL) NOPASSWD: ALL'
+    regexp: '%admin  ALL=(ALL) NOPASSWD: ALL'
+    validate: visudo -cf %s

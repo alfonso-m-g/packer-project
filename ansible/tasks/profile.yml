@@ -1,0 +1,23 @@
+- name: Copy profile
+  shell: |
+    cp {{ ansible_root_path }}/files/home/.profile {{ agent_root_path }}/.profile
+    cp {{ ansible_root_path }}/files/home/.profile {{ agent_jenkins_path }}/.profile
+    chown Jenkins:staff {{ agent_jenkins_path }}/.profile
+
+- name: Copy bash profile
+  shell: |
+    cp {{ ansible_root_path }}/files/home/.bash_profile {{ agent_root_path }}/.bash_profile
+    cp {{ ansible_root_path }}/files/home/.bash_profile {{ agent_jenkins_path }}/.bash_profile
+    chown Jenkins:staff {{ agent_jenkins_path }}/.bash_profile
+
+- name: Copy bashrc
+  shell: |
+    cp {{ ansible_root_path }}/files/home/.bashrc {{ agent_root_path }}/.bashrc
+    cp {{ ansible_root_path }}/files/home/.bashrc {{ agent_jenkins_path }}/.bashrc
+    chown Jenkins:staff {{ agent_jenkins_path }}/.bashrc
+
+- name: Copy zshrc
+  shell: |
+    cp {{ ansible_root_path }}/files/home/.zshrc {{ agent_root_path }}/.zshrc
+    cp {{ ansible_root_path }}/files/home/.zshrc {{ agent_jenkins_path }}/.zshrc
+    chown Jenkins:staff {{ agent_jenkins_path }}/.zshrc
