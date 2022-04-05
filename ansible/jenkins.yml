@@ -6,14 +6,14 @@
     - vars/vars.yml
     - vars/passwords.yml
   tasks:
-    - include_tasks: tasks/brew.yml
-    - include_tasks: tasks/certs.yml
-    - include_tasks: tasks/git-lfs.yml
-    - include_tasks: tasks/awscli.yml
-    - include_tasks: tasks/java.yml
-    - include_tasks: tasks/ruby.yml
-    - include_tasks: tasks/fastlane.yml
-    - include_tasks: tasks/xcode.yml
-    - include_tasks: tasks/swift.yml
-    - include_tasks: tasks/sentry.yml
-    - include_tasks: tasks/provisioning-profiles.yml
+    # - include_tasks: tasks/brew.yml
+    # - include_tasks: tasks/certs.yml
+    # - include_tasks: tasks/git-lfs.yml
+    # - include_tasks: tasks/awscli.yml
+    # - include_tasks: tasks/java.yml
+    # - include_tasks: tasks/ruby.yml
+    # - include_tasks: tasks/fastlane.yml
+    # - include_tasks: tasks/xcode.yml
+    # - include_tasks: tasks/swift.yml
+    # - include_tasks: tasks/sentry.yml
+    # - include_tasks: tasks/provisioning-profiles.yml
